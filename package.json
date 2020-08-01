@@ -1,0 +1,41 @@
+{
+  "name": "dungeon-brain-server",
+  "version": "2.0.0",
+  "description": "API backend for Dungeon Brain, a web app for sharing Dungeons & Dragons character ideas.",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vihanchaudhry/dungeon-brain-server.git"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "mongodb"
+  ],
+  "author": "Vihan Chaudhry <vihanchaudhry@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/vihanchaudhry/dungeon-brain-server/issues"
+  },
+  "homepage": "https://github.com/vihanchaudhry/dungeon-brain-server#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.27",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2"
+  }
+}
