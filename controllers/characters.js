@@ -33,6 +33,7 @@ exports.get = async (req, res) => {
         .status(500)
         .json({ success: false, message: 'Failed to fetch the character.' })
     );
+
   if (character) return res.status(200).json(character);
   return res
     .status(404)
@@ -40,18 +41,10 @@ exports.get = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  console.log(req.protocol);
-  // const imageUrl = `${req.protocol}://${req.get('host')}/images/uploads/${
-  //   req.file.filename
-  // }`;
-  const imageUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/images/default-portraits/human-male.jpg`;
-
   const character = new Character({
     name: req.body.name,
     description: req.body.description,
-    imageUrl: imageUrl,
+    imageUrl: req.body.imageUrl,
     isPrivate: req.body.isPrivate,
     author: req.user._id,
     race: req.body.race,
@@ -61,31 +54,25 @@ exports.create = async (req, res) => {
     faith: req.body.faith,
     background: req.body.background,
   });
-  const saved = await character
-    .save()
-    .catch(err =>
-      res
+
+  const saved = await character.save(err => {
+    if (err) {
+      return res
         .status(500)
-        .json({ success: false, message: 'Failed to save your character.' })
-    );
-  return res
-    .status(201)
-    .json({ success: true, message: 'Character was successfully created.' });
+        .json({ success: false, message: 'Failed to save your character.' });
+    }
+    return res
+      .status(201)
+      .json({ success: true, message: 'Character was successfully created.' });
+  });
 };
 
 exports.update = async (req, res) => {
-  let imageUrl = req.body.imageUrl;
-
-  // generate new img url if new img detected
-  if (req.file) {
-    imageUrl = `https://${req.get('host')}/images/uploads/${req.file.filename}`;
-  }
-
   const character = new Character({
     _id: req.body._id,
     name: req.body.name,
     description: req.body.description,
-    imageUrl: imageUrl,
+    imageUrl: req.body.imageUrl,
     isPrivate: req.body.isPrivate,
     author: req.user._id,
     race: req.body.race,
@@ -95,6 +82,7 @@ exports.update = async (req, res) => {
     faith: req.body.faith,
     background: req.body.background,
   });
+
   const result = await Character.updateOne(
     { _id: req.params.id, author: req.user._id },
     character
@@ -105,8 +93,7 @@ exports.update = async (req, res) => {
         .status(500)
         .json({ success: false, message: 'Failed to save your character.' })
     );
-  console.log(character);
-  console.log(result);
+
   if (result.n > 0) {
     return res
       .status(200)
@@ -129,6 +116,7 @@ exports.delete = async (req, res) => {
         .status(500)
         .json({ success: false, message: 'Failed to delete the character.' })
     );
+
   if (result.deletedCount > 0) {
     return res.status(200).json({ message: 'Character deleted successfully.' });
   } else {

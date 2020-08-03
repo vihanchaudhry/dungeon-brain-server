@@ -11,8 +11,9 @@ module.exports = (req, res, next) => {
     };
     return next();
   } catch (err) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'You are not authorized to perform this action.' });
+    return res.status(403).json({
+      success: false,
+      message: 'You are not authorized to perform this action.',
+    });
   }
 };

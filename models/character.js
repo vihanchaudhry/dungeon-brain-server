@@ -29,19 +29,38 @@ const characterSchema = mongoose.Schema(
     },
     race: {
       type: String,
-      enum: ['human', 'elf', 'dwarf', 'halfling'],
+      default: '',
+      enum: ['', 'human', 'elf', 'dwarf', 'halfling'],
     },
     class: {
       type: String,
-      enum: ['fighter', 'rogue', 'cleric', 'wizard'],
+      default: '',
+      enum: [
+        '',
+        'barbarian',
+        'bard',
+        'cleric',
+        'druid',
+        'fighter',
+        'monk',
+        'paladin',
+        'ranger',
+        'rogue',
+        'sorcerer',
+        'warlock',
+        'wizard',
+      ],
     },
     gender: {
       type: String,
-      enum: ['male', 'female', 'nonbinary'],
+      default: '',
+      enum: ['', 'male', 'female', 'nonbinary'],
     },
     alignment: {
       type: String,
+      default: '',
       enum: [
+        '',
         'lawful-good',
         'lawful-neutral',
         'lawful-evil',
@@ -55,10 +74,13 @@ const characterSchema = mongoose.Schema(
     },
     faith: {
       type: String,
+      default: '',
     },
     background: {
       type: String,
+      default: '',
       enum: [
+        '',
         'acolyte',
         'criminal-spy',
         'folk-hero',

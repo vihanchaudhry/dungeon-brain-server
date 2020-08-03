@@ -2,6 +2,7 @@ const express = require('express');
 const CharactersController = require('../../controllers/characters');
 const authorization = require('../../middleware/authorization');
 const file = require('../../middleware/file');
+const portrait = require('../../middleware/portrait');
 
 const router = express.Router();
 
@@ -15,12 +16,11 @@ router.get('/:id', CharactersController.get);
 
 // @desc    Create a character
 // @route   character /api/characters
-router.post('/', authorization, file, CharactersController.create);
-// router.post('/', CharactersController.create);
+router.post('/', authorization, file, portrait, CharactersController.create);
 
 // @desc    Update a character
 // @route   PUT /api/characters/:id
-router.put('/:id', authorization, file, CharactersController.update);
+router.put('/:id', authorization, file, portrait, CharactersController.update);
 
 // @desc    Delete a character
 // @route   DELETE /api/characters/:id
