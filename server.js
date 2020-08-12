@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Load config
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: './config/.env' });
 
 // Connect to the MongoDB database
 dbConnect();
