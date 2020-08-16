@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "API backend for Dungeon Brain, a web app for sharing Dungeons & Dragons character ideas.",
   "main": "server.js",
+  "engines": {
+    "node": "12.18.3"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development nodemon server.js"
