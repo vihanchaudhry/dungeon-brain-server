@@ -75,6 +75,7 @@ const characterSchema = mongoose.Schema(
     faith: {
       type: String,
       default: '',
+      maxlength: 64,
     },
     background: {
       type: String,
@@ -94,5 +95,14 @@ const characterSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+characterSchema.index({
+  name: 'text',
+  race: 'text',
+  class: 'text',
+  gender: 'text',
+  faith: 'text',
+  background: 'text',
+});
 
 module.exports = mongoose.model('Character', characterSchema);

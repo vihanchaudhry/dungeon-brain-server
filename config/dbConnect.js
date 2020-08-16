@@ -1,4 +1,3 @@
-/* This is a database connection function*/
 const mongoose = require('mongoose');
 
 const connection = {}; /* creating connection object*/
@@ -14,7 +13,9 @@ async function dbConnect() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    autoIndex: process.env.NODE_ENV === 'production' ? false : true,
   });
+
   console.log(`MongoDB connected: ${db.connection.host}`);
 
   // Setup logging in development mode

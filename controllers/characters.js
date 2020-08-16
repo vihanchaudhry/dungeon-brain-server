@@ -2,14 +2,41 @@ const Character = require('../models/character');
 
 exports.getAll = async (req, res) => {
   let characters;
-  const query = {
+  const params = {
     page: +req.query.page,
     pageSize: +req.query.pageSize,
+    query: req.query.q,
   };
 
+  // if there is a search query
+  if (params.query) {
+    characters = await Character.find({
+      $text: { $search: params.query },
+    })
+      .skip((params.page - 1) * params.pageSize)
+      .limit(params.pageSize)
+      .lean()
+      .catch(err =>
+        res
+          .status(500)
+          .json({ success: false, message: 'Failed to fetch characters.' })
+      );
+
+    const count = await Character.countDocuments({
+      $text: { $search: params.query },
+    }).catch(err =>
+      res
+        .status(500)
+        .json({ success: false, message: 'Failed to fetch characters.' })
+    );
+
+    return res.status(200).json({ success: true, characters, count });
+  }
+
+  // default case: no search query
   characters = await Character.find()
-    .skip((query.page - 1) * query.pageSize)
-    .limit(query.pageSize)
+    .skip((params.page - 1) * params.pageSize)
+    .limit(params.pageSize)
     .lean()
     .catch(err =>
       res
@@ -17,11 +44,12 @@ exports.getAll = async (req, res) => {
         .json({ success: false, message: 'Failed to fetch characters.' })
     );
 
-  const count = await Character.count().catch(err =>
+  const count = await Character.estimatedDocumentCount().catch(err =>
     res
       .status(500)
       .json({ success: false, message: 'Failed to fetch characters.' })
   );
+
   return res.status(200).json({ success: true, characters, count });
 };
 
