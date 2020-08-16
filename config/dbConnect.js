@@ -9,12 +9,17 @@ async function dbConnect() {
   }
 
   /* connecting to our database */
-  const db = await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    autoIndex: process.env.NODE_ENV === 'production' ? false : true,
-  });
+  const db = await mongoose.connect(
+    process.env.NODE_ENV === 'production'
+      ? process.env.MONGODB_PROD_URI
+      : process.env.MONGODB_URI,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      autoIndex: process.env.NODE_ENV === 'production' ? false : true,
+    }
+  );
 
   console.log(`MongoDB connected: ${db.connection.host}`);
 
