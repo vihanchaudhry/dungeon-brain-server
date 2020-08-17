@@ -17,7 +17,7 @@ async function dbConnect() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
-      autoIndex: process.env.NODE_ENV === 'production' ? false : true,
+      useCreateIndex: true,
     }
   );
 

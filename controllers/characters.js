@@ -1,7 +1,9 @@
 const Character = require('../models/character');
 
 exports.getAll = async (req, res) => {
-  let characters;
+  let characters = [];
+  let count = 0;
+
   const params = {
     page: +req.query.page,
     pageSize: +req.query.pageSize,
@@ -17,39 +19,44 @@ exports.getAll = async (req, res) => {
       .limit(params.pageSize)
       .lean()
       .catch(err =>
-        res
-          .status(500)
-          .json({ success: false, message: 'Failed to fetch characters.' })
+        res.status(500).json({
+          success: false,
+          message: 'Failed to fetch characters.',
+        })
       );
 
-    const count = await Character.countDocuments({
+    count = await Character.countDocuments({
       $text: { $search: params.query },
     }).catch(err =>
+      res.status(500).json({
+        success: false,
+        message: 'Failed to fetch characters.',
+      })
+    );
+  } else {
+    // default case: no search query
+    characters = await Character.find()
+      .skip((params.page - 1) * params.pageSize)
+      .limit(params.pageSize)
+      .lean()
+      .catch(err =>
+        res
+          .status(500)
+          .json({
+            success: false,
+            message: 'Failed to fetch characters.',
+          })
+      );
+
+    count = await Character.estimatedDocumentCount().catch(err =>
       res
         .status(500)
         .json({ success: false, message: 'Failed to fetch characters.' })
     );
 
-    return res.status(200).json({ success: true, characters, count });
   }
 
-  // default case: no search query
-  characters = await Character.find()
-    .skip((params.page - 1) * params.pageSize)
-    .limit(params.pageSize)
-    .lean()
-    .catch(err =>
-      res
-        .status(500)
-        .json({ success: false, message: 'Failed to fetch characters.' })
-    );
-
-  const count = await Character.estimatedDocumentCount().catch(err =>
-    res
-      .status(500)
-      .json({ success: false, message: 'Failed to fetch characters.' })
-  );
-
+  // send response
   return res.status(200).json({ success: true, characters, count });
 };
 
