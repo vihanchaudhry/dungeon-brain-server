@@ -13,6 +13,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// trust X-Forwarded-* headers for req.protocol
+app.enable('trust proxy');
+
 // Load config
 dotenv.config({ path: './config/.env' });
 
