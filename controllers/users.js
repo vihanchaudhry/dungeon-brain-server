@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     );
 
   // success
-  return res.status(201).json({ success: true });
+  return res.status(201).json({ success: true, message: 'Registration successful! You may now login.' });
 };
 
 exports.login = async (req, res) => {
