@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
+const compression = require('compression');
 const dbConnect = require('./config/dbConnect');
 
 // Initialize express app
@@ -28,6 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS middleware
 app.use(cors());
+
+// Gzip compression middleware
+app.use(compression());
 
 // Serve static files from public
 app.use(express.static(path.join('public')));
